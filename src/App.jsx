@@ -20,7 +20,16 @@ export default function App() {
     setTimeout(() => setMessage(""), 2500);
   }
 
-  const menu = ["Dashboard", "Employees", "AI Roster", "Leave Requests", "Shift Swaps", "Compliance", "Branches"];
+  const menu = [
+    "Dashboard",
+    "Employees",
+    "AI Roster",
+    "Leave Requests",
+    "Shift Swaps",
+    "Compliance",
+    "Branches",
+    "Reports",
+  ];
 
   return (
     <div className="app">
@@ -50,6 +59,7 @@ export default function App() {
         {page === "Shift Swaps" && <ShiftSwaps handleAction={handleAction} />}
         {page === "Compliance" && <Compliance handleAction={handleAction} />}
         {page === "Branches" && <Branches handleAction={handleAction} />}
+        {page === "Reports" && <Reports handleAction={handleAction} />}
       </main>
     </div>
   );
@@ -154,16 +164,6 @@ function LeaveRequests({ handleAction }) {
   );
 }
 
-function Request({ name, type, date, handleAction }) {
-  return (
-    <div className="request">
-      <p><b>{name}</b> — {type} — {date}</p>
-      <button onClick={() => handleAction(`${name}'s request approved.`)}>Approve</button>
-      <button onClick={() => handleAction(`${name}'s request rejected.`)}>Reject</button>
-    </div>
-  );
-}
-
 function ShiftSwaps({ handleAction }) {
   return (
     <div className="section">
@@ -174,11 +174,23 @@ function ShiftSwaps({ handleAction }) {
   );
 }
 
+function Request({ name, type, date, handleAction }) {
+  return (
+    <div className="request">
+      <p><b>{name}</b> — {type} — {date}</p>
+      <button onClick={() => handleAction(`${name}'s request approved.`)}>Approve</button>
+      <button onClick={() => handleAction(`${name}'s request rejected.`)}>Reject</button>
+    </div>
+  );
+}
+
 function Compliance({ handleAction }) {
   return (
     <div className="section">
       <h2>AI Compliance Monitor</h2>
-      <button onClick={() => handleAction("Compliance scan completed: 3 warnings found.")}>Run AI Compliance Scan</button>
+      <button onClick={() => handleAction("Compliance scan completed: 3 warnings found.")}>
+        Run AI Compliance Scan
+      </button>
       <ul className="ai-box">
         <li>1 branch missing Pharmacist in Charge coverage.</li>
         <li>3 licenses expiring within 90 days.</li>
@@ -203,6 +215,34 @@ function Branches({ handleAction }) {
         <Branch name="TLC Sharjah" status="Good Coverage" score="93%" />
         <Branch name="TLC Abu Dhabi" status="Overtime Risk" score="78%" />
       </div>
+    </div>
+  );
+}
+
+function Reports({ handleAction }) {
+  return (
+    <div className="section">
+      <h2>AI Reports Center</h2>
+      <p>Generate pharmacy workforce reports for management and compliance review.</p>
+
+      <div className="branch-grid">
+        <Report title="Weekly Roster Report" text="Summary of shifts, gaps, and PIC coverage." handleAction={handleAction} />
+        <Report title="Overtime Report" text="Employees at risk of exceeding weekly working hours." handleAction={handleAction} />
+        <Report title="License Expiry Report" text="Upcoming license expiry for pharmacists and technicians." handleAction={handleAction} />
+        <Report title="Branch Shortage Report" text="Branches with uncovered shifts or staffing risks." handleAction={handleAction} />
+      </div>
+    </div>
+  );
+}
+
+function Report({ title, text, handleAction }) {
+  return (
+    <div className="branch-card">
+      <h3>{title}</h3>
+      <p>{text}</p>
+      <button onClick={() => handleAction(`${title} generated successfully.`)}>
+        Generate Report
+      </button>
     </div>
   );
 }
